@@ -1,0 +1,18 @@
+
+# Business-logic related elements
+* @approvers/middle-platform
+*Application.java @approvers-support
+*Controller.java @approvers/middle-platform
+
+# Critical elements
+*.sh @approvers-support
+*.xml   @approvers/middle-platform
+*.properties @approvers-support @approvers/middle-platform
+application.properties @approvers-support
+applicationContext.xml @approvers-support
+pom.xml @approvers-support
+
+# Foundamental elements
+CODEOWNERS @approvers-support
+Jenkinsfile @approvers-support
+
