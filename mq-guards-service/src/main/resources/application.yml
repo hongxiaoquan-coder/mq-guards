@@ -1,0 +1,39 @@
+# SpringBoot配置
+app:
+  # 应用的身份标识
+  id: mq-guards
+# Apollo配置
+apollo:
+  bootstrap:
+    # 设置在应用启动阶段就加载 Apollo 配置
+    enabled: true
+    # 要通过Apollo注入的namespace
+    namespaces: application.properties, application-datasource.yml, application-dubbo.yml, application-mongodb.yml, application-redis.yml, application-rocketmq.yml, application-xxljob.yml, application-idworker.yml
+  # 自定义本地配置文件缓存路径
+  cacheDir: ./apollo-cache
+  # 获取配置的地址。因为Apollo不支持自定义的env（如rd，qa）,因此只能通过启动时指定JVM参数来实现不同环境的切换
+  # 启动命令：-Denv=rd -Dapollo.meta=http://meta.apollo.hkbackend.com
+#  meta: http://meta.apollo.hkbackend.com
+  # 自动更新Spring占位符的配置
+  autoUpdateInjectedSpringProperties: true
+
+# 日志配置
+logging:
+  config: classpath:logback.xml
+  level:
+    org.springframework.boot.autoconfigure: error
+debug: false
+
+# aop配置
+spring:
+  aop:
+    auto: true
+    proxy-target-class: true
+
+dubbo:
+  consumer:
+    check: false
+    retries: 0
+  config-center:
+    timeout: 60000
+

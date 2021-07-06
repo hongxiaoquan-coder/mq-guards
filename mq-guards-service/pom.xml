@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.hk.simba.mq.guards</groupId>
+        <artifactId>mq-guards</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>mq-guards-service</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>mq-guards-service</name>
+    <description>mq-guards-service</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.hk.simba.mq.guards</groupId>
+            <artifactId>mq-guards-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.hk.simba.mq.guards</groupId>
+            <artifactId>mq-guards-event</artifactId>
+        </dependency>
+
+        <!-- 开放平台 -->
+        <dependency>
+            <groupId>com.hk.sisyphus</groupId>
+            <artifactId>sisyphus-client-apache-dubbo</artifactId>
+        </dependency>
+        <!-- RPC框架 Dubbo -->
+        <dependency>
+            <groupId>com.hk.simba.base</groupId>
+            <artifactId>simba-base-dubbo-starter</artifactId>
+        </dependency>
+        <!-- 分布式锁 -->
+        <dependency>
+            <groupId>com.hk.simba.base</groupId>
+            <artifactId>simba-base-distributed-lock-starter</artifactId>
+        </dependency>
+        <!-- 分布式ID生成器 -->
+        <dependency>
+            <groupId>com.hk.simba.base</groupId>
+            <artifactId>simba-base-idwork-starter</artifactId>
+        </dependency>
+        <!-- 分布式任务调度 xxl-job -->
+        <dependency>
+            <groupId>com.hk.simba.base</groupId>
+            <artifactId>simba-base-xxljob-starter</artifactId>
+        </dependency>
+        <!-- 对象映射框架 dozer -->
+        <dependency>
+            <groupId>com.hk.simba.base</groupId>
+            <artifactId>simba-base-bean-mapper-starter</artifactId>
+        </dependency>
+        <!-- 错误码 -->
+        <dependency>
+            <groupId>com.hk.simba.base</groupId>
+            <artifactId>simba-base-common-error</artifactId>
+        </dependency>
+        <!-- ORM框架 Mybatis -->
+        <dependency>
+            <groupId>com.hk.simba.base</groupId>
+            <artifactId>simba-base-data-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <!-- NOSQL数据库 Mongodb -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <!-- 分布式配置中心 Apollo -->
+        <dependency>
+            <groupId>com.ctrip.framework.apollo</groupId>
+            <artifactId>apollo-client</artifactId>
+        </dependency>
+        <!-- 面向切面编程 aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!-- JSON处理工具 FastJson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <!-- 消息队列 RocketMQ -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+        </dependency>
+        <!-- 数据库连接池 HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+        <!-- 数据库驱动 MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- 测试框架 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- 代码生成器 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- 阿里mq发送包 -->
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>1.8.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- 构建可执行的Jar -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

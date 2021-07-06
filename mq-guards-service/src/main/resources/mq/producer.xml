@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="producer" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
+        <property name="properties"> <!--生产者配置信息-->
+            <props>
+                <prop key="ProducerId">${aliyun.ons.producerId}</prop>
+                <prop key="AccessKey">${aliyun.ons.accessKey}</prop>
+                <prop key="SecretKey">${aliyun.ons.secretKey}</prop>
+                <prop key="NAMESRV_ADDR">${aliyun.ons.address}</prop>
+            </props>
+        </property>
+    </bean>
+</beans>
