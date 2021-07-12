@@ -13,6 +13,7 @@ import com.xxl.job.core.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -35,6 +36,9 @@ public class MqGuardsJob {
     @Autowired
     private MqGuardsProperties mqGuardsProperties;
 
+    @Value(value = "${mq.guards.maxRetryTimes}")
+    private Integer maxRetryTimes;
+
     @XxlJob("reissueMessageJob")
     public ReturnT<String> reissueMessage(String param) {
         log.info("--------消息补发开始--------, param:" + param);
@@ -43,7 +47,7 @@ public class MqGuardsJob {
         Date endDate = new Date();
         Date startDate = DateUtils.addMinutes(endDate, -offset);
         // 查询执行时间范围内 状态为初始化的消息进行补发操作
-        List<MqSendLogs> mqSendLogs = mqSendLogsService.queryUnReissuedMessages(startDate, endDate, MqStatusEnums.INIT.getCode());
+        List<MqSendLogs> mqSendLogs = mqSendLogsService.queryUnReissuedMessages(startDate, endDate, MqStatusEnums.INIT.getCode(), maxRetryTimes);
         log.info("--------共有{}条消息需要补发--------", mqSendLogs.size());
         mqSendLogs.forEach(mq -> {
             Integer mqMaxRetryTimes = mq.getMqMaxRetryTimes();

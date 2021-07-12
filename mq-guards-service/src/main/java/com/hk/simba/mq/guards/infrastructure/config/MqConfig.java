@@ -21,9 +21,11 @@ import java.util.Properties;
 @ConditionalOnProperty(prefix = "mq.guards", name = "use.enabled", havingValue = "true")
 @EnableConfigurationProperties(MqGuardsProperties.class)
 public class MqConfig {
+    private final MqGuardsProperties mqGuardsProperties;
 
-    @Autowired
-    private MqGuardsProperties mqGuardsProperties;
+    public MqConfig(MqGuardsProperties mqGuardsProperties) {
+        this.mqGuardsProperties = mqGuardsProperties;
+    }
 
     @Bean(initMethod = "start", destroyMethod = "shutdown")
     public DefaultMQProducer createProducer() {

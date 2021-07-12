@@ -19,12 +19,13 @@ public interface MqSendLogsService {
     /**
      * 查询时间范围内 未进行补发且执行次数小于最大执行次数的消息
      *
-     * @param startTime 开始时间
-     * @param endTime   结束时间
-     * @param status    状态值
+     * @param startTime     开始时间
+     * @param endTime       结束时间
+     * @param status        状态值
+     * @param maxRetryTimes 定时任务最大重试次数
      * @return java.util.List<com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs>
      */
-    List<MqSendLogs> queryUnReissuedMessages(Date startTime, Date endTime, Integer status);
+    List<MqSendLogs> queryUnReissuedMessages(Date startTime, Date endTime, Integer status, Integer maxRetryTimes);
 
     /**
      * 根据id修改重试次数和消息状态
