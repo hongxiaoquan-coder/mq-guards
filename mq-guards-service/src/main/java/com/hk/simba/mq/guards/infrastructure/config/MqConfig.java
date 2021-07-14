@@ -30,7 +30,6 @@ public class MqConfig {
     @Bean(initMethod = "start", destroyMethod = "shutdown")
     public DefaultMQProducer createProducer() {
         Properties properties = new Properties();
-        properties.put("GROUP_ID", mqGuardsProperties.getGroupId());
         properties.put("AccessKey", mqGuardsProperties.getAccessKey());
         properties.put("SecretKey", mqGuardsProperties.getSecretKey());
         properties.put("NAMESRV_ADDR", mqGuardsProperties.getNameServerAddress());

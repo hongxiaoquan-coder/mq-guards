@@ -1,8 +1,10 @@
 package com.hk.simba.mq.guards.access.job;
 
+import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.SendCallback;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.common.message.Message;
+import com.aliyun.openservices.shade.org.apache.commons.lang3.StringUtils;
 import com.hk.simba.mq.guards.domain.MqSendLogsService;
 import com.hk.simba.mq.guards.infrastructure.mq.MqGuardsProperties;
 import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
@@ -52,6 +54,11 @@ public class MqGuardsJob {
         mqSendLogs.forEach(mq -> {
             Integer mqMaxRetryTimes = mq.getMqMaxRetryTimes();
             defaultMQProducer.setRetryTimesWhenSendAsyncFailed(mqMaxRetryTimes);
+            String producerGroup = mq.getProducerId();
+            if (StringUtils.isEmpty(producerGroup)) {
+                producerGroup = "__ONS_PRODUCER_DEFAULT_GROUP";
+            }
+            defaultMQProducer.setProducerGroup(producerGroup);
             Message message = new Message(mq.getTopic(), mq.getTag(), mq.getMqKey(), mq.getBody().getBytes());
             try {
                 Integer sendWay = mq.getSendWay();
