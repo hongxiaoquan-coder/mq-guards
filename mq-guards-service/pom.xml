@@ -59,11 +59,6 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
-        <!-- NOSQL数据库 Mongodb -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
         <!-- 分布式配置中心 Apollo -->
         <dependency>
             <groupId>com.ctrip.framework.apollo</groupId>
@@ -99,16 +94,6 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-engine-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- 阿里mq发送包 -->
