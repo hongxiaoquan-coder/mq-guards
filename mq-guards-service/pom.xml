@@ -26,11 +26,6 @@
             <artifactId>mq-guards-event</artifactId>
         </dependency>
 
-        <!-- 开放平台 -->
-        <dependency>
-            <groupId>com.hk.sisyphus</groupId>
-            <artifactId>sisyphus-client-apache-dubbo</artifactId>
-        </dependency>
         <!-- RPC框架 Dubbo -->
         <dependency>
             <groupId>com.hk.simba.base</groupId>
