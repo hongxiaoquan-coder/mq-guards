@@ -13,10 +13,10 @@
     <description>mq-guards-api</description>
 
     <dependencies>
-        <dependency>
+       <!-- <dependency>
             <groupId>com.hk.sisyphus</groupId>
             <artifactId>sisyphus-client-common-annotation</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.hk.simba.base</groupId>
             <artifactId>simba-base-validation</artifactId>
