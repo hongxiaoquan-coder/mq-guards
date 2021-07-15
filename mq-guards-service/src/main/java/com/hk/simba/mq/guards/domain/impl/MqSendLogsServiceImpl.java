@@ -33,8 +33,8 @@ public class MqSendLogsServiceImpl implements MqSendLogsService {
     }
 
     @Override
-    public List<MqSendLogs> queryUnReissuedMessages(Date startTime, Date endTime, Integer status, Integer maxRetryTimes) {
-        return mqSendLogsMapper.selectAllByCreateTimeAndStatus(startTime, endTime, status, maxRetryTimes);
+    public List<MqSendLogs> queryUnReissuedMessages(Integer status, Integer maxRetryTimes) {
+        return mqSendLogsMapper.selectAllByCreateTimeAndStatus(status, maxRetryTimes);
     }
 
     @Override

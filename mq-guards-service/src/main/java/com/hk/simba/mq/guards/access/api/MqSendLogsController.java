@@ -1,5 +1,6 @@
 package com.hk.simba.mq.guards.access.api;
 
+import com.alibaba.fastjson.JSON;
 import com.hk.base.dto.response.BaseResponse;
 import com.hk.simba.mq.guards.domain.MqSendLogsService;
 import com.hk.simba.mq.guards.domain.param.InitMqSendLogsParams;
@@ -24,7 +25,7 @@ public class MqSendLogsController {
 
     @PostMapping("/insert")
     public BaseResponse insert(@RequestBody InitMqSendLogsParams params){
-        log.info("记录mq失败消息={}", params);
+        log.info("记录mq失败消息={}", JSON.toJSONString(params));
         mqSendLogsService.insert(params);
         return BaseResponse.success("初始化mq失败记录成功");
     }

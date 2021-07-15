@@ -7,12 +7,10 @@ import com.aliyun.openservices.shade.org.apache.commons.lang3.StringUtils;
 import com.hk.simba.mq.guards.domain.MqSendLogsService;
 import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
 import com.hk.simba.mq.guards.infrastructure.database.enums.MqStatusEnums;
-import com.hk.simba.mq.guards.infrastructure.mq.MqGuardsProperties;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import com.xxl.job.core.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,8 +32,6 @@ public class MqGuardsJob {
     private MqSendLogsService mqSendLogsService;
     @Autowired
     private DefaultMQProducer defaultMQProducer;
-    @Autowired
-    private MqGuardsProperties mqGuardsProperties;
 
     @Value(value = "${mq.guards.maxRetryTimes}")
     private Integer maxRetryTimes;
@@ -43,12 +39,8 @@ public class MqGuardsJob {
     @XxlJob("reissueMessageJob")
     public ReturnT<String> reissueMessage(String param) {
         log.info("--------消息补发开始--------, param:" + param);
-        // 确定执行时间范围
-        Integer offset = mqGuardsProperties.getOffset();
-        Date endDate = new Date();
-        Date startDate = DateUtils.addMinutes(endDate, -offset);
-        // 查询执行时间范围内 状态为初始化的消息进行补发操作
-        List<MqSendLogs> mqSendLogs = mqSendLogsService.queryUnReissuedMessages(startDate, endDate, MqStatusEnums.INIT.getCode(), maxRetryTimes);
+        // 查询状态为初始化 重试次数在最大重试次数下的消息进行补发操作
+        List<MqSendLogs> mqSendLogs = mqSendLogsService.queryUnReissuedMessages(MqStatusEnums.INIT.getCode(), maxRetryTimes);
         log.info("--------共有{}条消息需要补发--------", mqSendLogs.size());
         mqSendLogs.forEach(mq -> {
             Integer mqMaxRetryTimes = mq.getMqMaxRetryTimes();
