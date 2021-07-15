@@ -101,7 +101,7 @@ public class MqSendLogs {
     * 修改时间
     */
     @TableField(fill = FieldFill.UPDATE)
-    private Date modifyTime;
+    private Date updateTime;
 
     /**
     * 修改者
