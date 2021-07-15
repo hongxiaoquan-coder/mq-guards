@@ -25,12 +25,6 @@
             <groupId>com.hk.simba.mq.guards</groupId>
             <artifactId>mq-guards-event</artifactId>
         </dependency>
-<!--
-        &lt;!&ndash; 开放平台 &ndash;&gt;
-        <dependency>
-            <groupId>com.hk.sisyphus</groupId>
-            <artifactId>sisyphus-client-apache-dubbo</artifactId>
-        </dependency>-->
         <!-- RPC框架 Dubbo -->
         <dependency>
             <groupId>com.hk.simba.base</groupId>
@@ -40,11 +34,6 @@
         <dependency>
             <groupId>com.hk.simba.base</groupId>
             <artifactId>simba-base-distributed-lock-starter</artifactId>
-        </dependency>
-        <!-- 分布式ID生成器 -->
-        <dependency>
-            <groupId>com.hk.simba.base</groupId>
-            <artifactId>simba-base-idwork-starter</artifactId>
         </dependency>
         <!-- 分布式任务调度 xxl-job -->
         <dependency>
