@@ -25,7 +25,12 @@
             <groupId>com.hk.simba.mq.guards</groupId>
             <artifactId>mq-guards-event</artifactId>
         </dependency>
-
+<!--
+        &lt;!&ndash; 开放平台 &ndash;&gt;
+        <dependency>
+            <groupId>com.hk.sisyphus</groupId>
+            <artifactId>sisyphus-client-apache-dubbo</artifactId>
+        </dependency>-->
         <!-- RPC框架 Dubbo -->
         <dependency>
             <groupId>com.hk.simba.base</groupId>
