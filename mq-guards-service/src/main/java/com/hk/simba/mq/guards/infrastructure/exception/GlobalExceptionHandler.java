@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class GlobalExceptionHandler {
 
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public BaseResponse handleBizException(Exception ex) {
