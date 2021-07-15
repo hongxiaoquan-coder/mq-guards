@@ -1,5 +1,9 @@
 package com.hk.simba.mq.guards.infrastructure.constant;
 
+/**
+ * @author Allen
+ * @since 2021-07-01
+ */
 public class MqGuardsConstant {
     /**
      * 成功返回码

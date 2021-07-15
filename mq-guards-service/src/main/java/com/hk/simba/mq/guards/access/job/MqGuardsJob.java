@@ -64,7 +64,7 @@ public class MqGuardsJob {
                 Date targetTime = mq.getTargetTime();
                 if (targetTime != null) {
                     long endTime = targetTime.getTime();
-                    long startTime = new Date().getTime();
+                    long startTime = System.currentTimeMillis();
                     long startDeliverTime = endTime - startTime > 0 ? endTime - startTime : 0L;
                     if (startDeliverTime > 0) {
                         message.putUserProperty(com.aliyun.openservices.ons.api.Message.SystemPropKey.STARTDELIVERTIME, String.valueOf(startDeliverTime));

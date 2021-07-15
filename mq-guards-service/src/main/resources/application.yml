@@ -8,7 +8,7 @@ apollo:
     # 设置在应用启动阶段就加载 Apollo 配置
     enabled: true
     # 要通过Apollo注入的namespace
-    namespaces: application.properties, application-datasource.yml, application-dubbo.yml, application-redis.yml, application-xxljob.yml, application-idworker.yml ,sensitive-config.yml
+    namespaces: application.properties, application-datasource.yml, application-dubbo.yml, application-mongodb.yml, application-redis.yml, application-rocketmq.yml, application-xxljob.yml, application-idworker.yml
   # 自定义本地配置文件缓存路径
   cacheDir: ./apollo-cache
   # 获取配置的地址。因为Apollo不支持自定义的env（如rd，qa）,因此只能通过启动时指定JVM参数来实现不同环境的切换

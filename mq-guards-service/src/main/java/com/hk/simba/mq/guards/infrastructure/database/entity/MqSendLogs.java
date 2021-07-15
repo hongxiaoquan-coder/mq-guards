@@ -7,6 +7,9 @@ import java.util.Date;
 
 /**
  * mq发送记录表
+ *
+ * @author Allen
+ * @since 2021-07-01
  */
 @Data
 @TableName("mq_send_logs")

@@ -6,6 +6,10 @@ import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Allen
+ * @since 2021-07-01
+ */
 public interface MqSendLogsService {
 
     /**
@@ -30,6 +34,7 @@ public interface MqSendLogsService {
     /**
      * 根据id修改重试次数和消息状态
      *
+     * @param id 主键id
      * @param retriedTimes 重试次数
      * @param status       发送状态
      * @return int

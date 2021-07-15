@@ -7,6 +7,9 @@ import java.util.Date;
 
 /**
  * mq发送记录表初始化参数
+ *
+ * @author Allen
+ * @since 2021-07-01
  */
 @Data
 public class InitMqSendLogsParams implements Serializable {

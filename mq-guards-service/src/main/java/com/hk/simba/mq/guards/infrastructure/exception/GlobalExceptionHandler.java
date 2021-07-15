@@ -6,7 +6,10 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+/**
+ * @author Allen
+ * @since 2021-07-01
+ */
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
