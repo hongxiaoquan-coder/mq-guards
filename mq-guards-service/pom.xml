@@ -30,11 +30,6 @@
             <groupId>com.hk.simba.base</groupId>
             <artifactId>simba-base-dubbo-starter</artifactId>
         </dependency>
-        <!-- 分布式锁 -->
-        <dependency>
-            <groupId>com.hk.simba.base</groupId>
-            <artifactId>simba-base-distributed-lock-starter</artifactId>
-        </dependency>
         <!-- 分布式任务调度 xxl-job -->
         <dependency>
             <groupId>com.hk.simba.base</groupId>

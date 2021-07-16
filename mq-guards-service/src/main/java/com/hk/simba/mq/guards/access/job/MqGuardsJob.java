@@ -11,7 +11,6 @@ import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import com.xxl.job.core.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,20 +26,22 @@ import static com.aliyun.openservices.shade.com.alibaba.fastjson.JSON.toJSONStri
 @Component
 @Slf4j
 public class MqGuardsJob {
+    private final MqSendLogsService mqSendLogsService;
+    private final DefaultMQProducer defaultMQProducer;
 
-    @Autowired
-    private MqSendLogsService mqSendLogsService;
-    @Autowired
-    private DefaultMQProducer defaultMQProducer;
+    public MqGuardsJob(MqSendLogsService mqSendLogsService, DefaultMQProducer defaultMQProducer){
+        this.mqSendLogsService = mqSendLogsService;
+        this.defaultMQProducer = defaultMQProducer;
+    }
 
     @Value(value = "${mq.guards.maxRetryTimes}")
     private Integer maxRetryTimes;
 
     @XxlJob("reissueMessageJob")
     public ReturnT<String> reissueMessage(String param) {
-        log.info("--------消息补发开始--------, param:" + param);
+        log.info("--------消息补发开始--------");
         // 查询状态为初始化 重试次数在最大重试次数下的消息进行补发操作
-        List<MqSendLogs> mqSendLogs = mqSendLogsService.queryUnReissuedMessages(MqStatusEnums.INIT.getCode(), maxRetryTimes);
+        List<MqSendLogs> mqSendLogs = mqSendLogsService.queryUnReissuedMessages(MqStatusEnums.SUCCESS.getCode(), maxRetryTimes);
         log.info("--------共有{}条消息需要补发--------", mqSendLogs.size());
         mqSendLogs.forEach(mq -> {
             Integer mqMaxRetryTimes = mq.getMqMaxRetryTimes();
@@ -81,7 +82,7 @@ public class MqGuardsJob {
                 mqSendLogsService.updateRetriedTimesAndStatus(mq.getId(), mq.getRetriedTimes() + 1, MqStatusEnums.SUCCESS.getCode());
                 log.info("{},消息={},补发成功", DateUtil.formatDateTime(new Date()), toJSONString(mq));
             } catch (Exception e) {
-                log.error("{},消息={},发送错误，异常原因={}",DateUtil.formatDateTime(new Date()), message, e);
+                log.error("{},消息={}补发失败，异常原因={}",DateUtil.formatDateTime(new Date()), message, e);
                 // 修改定时任务执行次数、任务状态
                 mqSendLogsService.updateRetriedTimesAndStatus(mq.getId(), mq.getRetriedTimes() + 1, MqStatusEnums.FAIL.getCode());
             }

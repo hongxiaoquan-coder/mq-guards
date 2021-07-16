@@ -19,7 +19,7 @@ public interface MqSendLogsMapper {
     int insertSelective(MqSendLogs mqSendLogs);
 
     /**
-     * 查询未进行补发且执行次数小于最大执行次数的消息
+     * 查询补发未成功且执行次数小于最大执行次数的消息
      *
      * @param status        状态值
      * @param maxRetryTimes 定时任务最大重试次数
