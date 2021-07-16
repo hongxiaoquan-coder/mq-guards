@@ -30,6 +30,10 @@
             <groupId>com.hk.simba.base</groupId>
             <artifactId>simba-base-dubbo-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <!-- 分布式任务调度 xxl-job -->
         <dependency>
             <groupId>com.hk.simba.base</groupId>
