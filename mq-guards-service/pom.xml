@@ -45,6 +45,11 @@
             <groupId>com.hk.simba.base</groupId>
             <artifactId>simba-base-bean-mapper-starter</artifactId>
         </dependency>
+        <!-- 分布式ID生成器 -->
+        <dependency>
+            <groupId>com.hk.simba.base</groupId>
+            <artifactId>simba-base-idwork-starter</artifactId>
+        </dependency>
         <!-- 错误码 -->
         <dependency>
             <groupId>com.hk.simba.base</groupId>
