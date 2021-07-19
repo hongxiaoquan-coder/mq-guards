@@ -3,7 +3,6 @@ package com.hk.simba.mq.guards.infrastructure.database.mapper;
 import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 /**
  * @author Allen

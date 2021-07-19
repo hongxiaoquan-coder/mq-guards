@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
             return BaseResponse.error("参数异常", ((BindException) ex).getFieldError());
         }
         // 未捕获的exception
-        log.error("系统错误:{}", ex);
+        log.error("系统错误:", ex);
         return BaseResponse.error("系统错误,原因为={}", ex);
     }
 

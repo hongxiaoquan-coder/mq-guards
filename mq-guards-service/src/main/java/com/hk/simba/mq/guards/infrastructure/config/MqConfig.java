@@ -1,10 +1,8 @@
 package com.hk.simba.mq.guards.infrastructure.config;
 
 import com.aliyun.openservices.ons.api.impl.rocketmq.ProducerImpl;
-import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.exception.MQClientException;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 import com.hk.simba.mq.guards.infrastructure.mq.MqGuardsProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

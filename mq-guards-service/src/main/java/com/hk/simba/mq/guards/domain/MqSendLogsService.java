@@ -3,7 +3,6 @@ package com.hk.simba.mq.guards.domain;
 import com.hk.simba.mq.guards.domain.param.InitMqSendLogsParams;
 import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public interface MqSendLogsService {
      * @param maxRetryTimes 定时任务最大重试次数
      * @return java.util.List<com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs>
      */
-    List<MqSendLogs> queryUnReissuedMessages(/*Date startTime, Date endTime,*/ Integer status, Integer maxRetryTimes);
+    List<MqSendLogs> queryUnReissuedMessages(Integer status, Integer maxRetryTimes);
 
     /**
      * 根据id修改重试次数和消息状态

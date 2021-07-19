@@ -38,7 +38,7 @@ public class InitMqSendLogsParams implements Serializable {
     /**
      * mq key
      */
-    private String key;
+    private String mqKey;
 
     /**
      * 生产者id
