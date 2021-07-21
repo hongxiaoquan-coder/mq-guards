@@ -46,7 +46,7 @@
                 body,
             </if>
             <if test="mqKey != null">
-                mqKey,
+                mq_key,
             </if>
             <if test="producerId != null">
                 producer_id,
