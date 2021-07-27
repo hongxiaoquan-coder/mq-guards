@@ -1,0 +1,2 @@
+#----------------starter�Զ�װ��-----------------
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.hk.simba.base.rocketmq.MqGuardsAutoConfiguration

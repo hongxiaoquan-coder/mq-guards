@@ -47,10 +47,7 @@ public class MqGuardsJob {
             Integer mqMaxRetryTimes = mq.getMqMaxRetryTimes();
             defaultMQProducer.setRetryTimesWhenSendAsyncFailed(mqMaxRetryTimes);
             String producerGroup = mq.getProducerId();
-            if (StringUtils.isEmpty(producerGroup)) {
-                producerGroup = "__ONS_PRODUCER_DEFAULT_GROUP";
-            }
-            defaultMQProducer.setProducerGroup(producerGroup);
+            defaultMQProducer.setProducerGroup(StringUtils.isEmpty(producerGroup) ? "__ONS_PRODUCER_DEFAULT_GROUP" : producerGroup);
             Message message = new Message(mq.getTopic(), mq.getTag(), mq.getMqKey(), mq.getBody().getBytes());
             try {
                 Integer sendWay = mq.getSendWay();
@@ -82,7 +79,7 @@ public class MqGuardsJob {
                 mqSendLogsService.updateRetriedTimesAndStatus(mq.getId(), mq.getRetriedTimes() + 1, MqStatusEnums.SUCCESS.getCode());
                 log.info("{},消息={},补发成功", DateUtil.formatDateTime(new Date()), toJSONString(mq));
             } catch (Exception e) {
-                log.error("{},消息={}补发失败，异常原因={}",DateUtil.formatDateTime(new Date()), message, e);
+                log.error("{},消息={}补发失败，异常原因=",DateUtil.formatDateTime(new Date()), message, e);
                 // 修改定时任务执行次数、任务状态
                 mqSendLogsService.updateRetriedTimesAndStatus(mq.getId(), mq.getRetriedTimes() + 1, MqStatusEnums.FAIL.getCode());
             }
