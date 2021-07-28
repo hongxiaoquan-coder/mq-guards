@@ -31,7 +31,7 @@ public class MqConfig {
         properties.put("AccessKey", mqGuardsProperties.getAccessKey());
         properties.put("SecretKey", mqGuardsProperties.getSecretKey());
         properties.put("NAMESRV_ADDR", mqGuardsProperties.getNameServerAddress());
-        properties.put("SendMsgTimeoutMillis", mqGuardsProperties.getSendMsgTimeoutMillis() == null ? 3000 : mqGuardsProperties.getSendMsgTimeoutMillis());
+        properties.put("SendMsgTimeoutMillis", mqGuardsProperties.getSendMsgTimeoutMillis() == null ? 6000 : mqGuardsProperties.getSendMsgTimeoutMillis());
         ProducerImpl producerImpl = new ProducerImpl(properties);
         DefaultMQProducer producer = producerImpl.getDefaultMQProducer();
         producer.setRetryTimesWhenSendFailed(mqGuardsProperties.getRetryTimesWhenFailed() == null ? 5 : mqGuardsProperties.getRetryTimesWhenFailed());
