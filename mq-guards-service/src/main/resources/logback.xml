@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
+    <!-- 项目类型,可选backend|service|web -->
+    <property name="LOG_PROJECT_TYPE" value="service"/>
+    <!-- 项目名称 -->
+    <property name="LOG_PROJECT_NAME" value="mq-guards-service"/>
+    <!-- 通用配置引入 (二选一，这个仅spring boot项目可用，控制台输出彩色日志)  -->
     <include resource="com/hk/simba/base/logging/logback/base-boot.xml"/>
 
     <!-- 属性定义 -->

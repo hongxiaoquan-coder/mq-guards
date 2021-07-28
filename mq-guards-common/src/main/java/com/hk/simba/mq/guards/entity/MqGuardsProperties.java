@@ -20,7 +20,6 @@ public class MqGuardsProperties implements Serializable {
     /**
      * 生产者id
      */
-    @NotBlank(message = "groupId is blank")
     private String groupId;
     /**
      * 访问密钥
@@ -75,7 +74,6 @@ public class MqGuardsProperties implements Serializable {
      * 消息卫士服务端地址
      * 用于存储消息记录的接口url
      */
-    @NotBlank(message = "serverUrl is blank")
     private String serverUrl;
     /**
      * 失败队列重试次数（尝试将失败mq消息存储到数据库）
