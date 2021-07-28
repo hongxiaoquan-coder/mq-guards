@@ -16,7 +16,7 @@ import java.util.Properties;
  * @since 2021-06-29
  */
 @Configuration
-@ConditionalOnProperty(prefix = "mq.guards", name = "use.enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "mq.guards", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(MqGuardsProperties.class)
 public class MqConfig {
     private final MqGuardsProperties mqGuardsProperties;
