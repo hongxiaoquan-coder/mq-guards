@@ -5,6 +5,7 @@ import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.SendCa
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.common.message.Message;
 import com.aliyun.openservices.shade.org.apache.commons.lang3.StringUtils;
 import com.hk.simba.mq.guards.domain.MqSendLogsService;
+import com.hk.simba.mq.guards.entity.SendWayEnum;
 import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
 import com.hk.simba.mq.guards.infrastructure.database.enums.MqStatusEnums;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -50,7 +51,6 @@ public class MqGuardsJob {
             defaultMQProducer.setProducerGroup(StringUtils.isEmpty(producerGroup) ? "__ONS_PRODUCER_DEFAULT_GROUP" : producerGroup);
             Message message = new Message(mq.getTopic(), mq.getTag(), mq.getMqKey(), mq.getBody().getBytes());
             try {
-                Integer sendWay = mq.getSendWay();
                 Date targetTime = mq.getTargetTime();
                 if (targetTime != null) {
                     long endTime = targetTime.getTime();
@@ -60,18 +60,19 @@ public class MqGuardsJob {
                         message.putUserProperty(com.aliyun.openservices.ons.api.Message.SystemPropKey.STARTDELIVERTIME, String.valueOf(startDeliverTime));
                     }
                 }
-                switch (sendWay){
-                    case 0:
+                SendWayEnum sendWayEnum = SendWayEnum.get(mq.getSendWay());
+                switch (sendWayEnum){
+                    case SYNC:
                         defaultMQProducer.send(message);
                         break;
-                    case 1:
+                    case ASYNC:
                         defaultMQProducer.send(message, (SendCallback) null);
                         break;
-                    case 2:
+                    case ONEWAY:
                         defaultMQProducer.sendOneway(message);
                         break;
                     default:
-                        log.error("unsupported send way");
+                        log.error("unsupported send way={}", mq.getSendWay());
                         break;
                 }
                 log.info("{},消息补偿服务补发mq消息={}", DateUtil.formatDateTime(new Date()), message);
