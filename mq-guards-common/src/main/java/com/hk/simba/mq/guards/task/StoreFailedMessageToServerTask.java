@@ -28,8 +28,8 @@ public class StoreFailedMessageToServerTask implements Runnable {
     @Override
     public void run() {
         log.info("【消息卫士】- storeFailureMessageThread处理失败消息操作开始");
-        // 异步方式不支持补发 故不进行存储记录
-        if (!SendWayEnum.ASYNC.getCode().equals(mqMessage.getSendWay())) {
+        // 仅同步方式支持补发
+        if (SendWayEnum.SYNC.getCode().equals(mqMessage.getSendWay())) {
             // 处理队列中的请求
             boolean result = CommonUtils.saveMessageToServer(mqMessage, mqGuardsProperties);
             // 添加失败 则把请求存入内存队列中
