@@ -18,6 +18,9 @@
         <module>mq-guards-api</module>
         <module>mq-guards-event</module>
         <module>mq-guards-service</module>
+        <module>mq-guards-common</module>
+        <module>simba-base-rocketmq-guards-ons-client-starter</module>
+        <module>simba-base-rocketmq-guards-open-source-starter</module>
     </modules>
 
     <properties>
