@@ -2,17 +2,13 @@ package com.hk.simba.base.rocketmq;
 
 import com.aliyun.openservices.ons.api.Message.SystemPropKey;
 import com.aliyun.openservices.ons.api.impl.rocketmq.ProducerImpl;
-import com.aliyun.openservices.shade.com.alibaba.fastjson.JSON;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.exception.MQClientException;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.SendCallback;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.SendResult;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.common.message.Message;
-import com.aliyun.openservices.shade.org.apache.commons.lang3.StringUtils;
-import com.hk.simba.mq.guards.entity.BaseResponse;
 import com.hk.simba.mq.guards.task.FailureQueueHandleThread;
-import com.hk.simba.mq.guards.util.HttpUtils;
-import com.hk.simba.mq.guards.entity.InitMqSendLogsParams;
+import com.hk.simba.mq.guards.util.CommonUtils;
 import com.hk.simba.mq.guards.entity.MqGuardsProperties;
 import com.hk.simba.mq.guards.entity.MqMessage;
 import com.hk.simba.mq.guards.entity.SendWayEnum;
@@ -21,7 +17,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -30,7 +25,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.aliyun.openservices.shade.com.alibaba.fastjson.JSON.toJSONString;
 import static java.util.Objects.nonNull;
 
 /**
@@ -122,7 +116,7 @@ public class MqGuardsClient {
                 StoreFailedMessageToServerTask task = (StoreFailedMessageToServerTask)r;
                 MqMessage mqMessage = task.getMqMessage();
                 log.info("【消息卫士】- 线程池已满，插入消息到失败队列中。mqMessage={}", mqMessage);
-                saveMessageToFailureQueue(mqMessage);
+                CommonUtils.saveMessageToFailureQueue(mqMessage, failureQueue);
             }
         };
 
@@ -155,7 +149,7 @@ public class MqGuardsClient {
         log.debug("【消息卫士】- 销毁线程池，结束。");
         // 释放失败队列中的请求
         log.debug("【消息卫士】- 清理失败队列，开始。");
-        releaseFailureQueue();
+        CommonUtils.releaseFailureQueue(failureQueue, mqGuardsProperties);
         log.debug("【消息卫士】- 清理失败队列，结束。");
         log.info("【消息卫士】- mqGuardsClient下线，完成。");
     }
@@ -239,72 +233,6 @@ public class MqGuardsClient {
             poolExecutor.execute(storeFailedMessageToServerTask);
         }
         return sendResult;
-    }
-
-    /**
-     * 将MQ消息保存到服务端
-     *
-     * @param mqMessage 消息实体
-     * @return boolean 保存是否成功
-     */
-    public boolean saveMessageToServer(MqMessage mqMessage) {
-        InitMqSendLogsParams params = new InitMqSendLogsParams();
-        params.setApplication(mqMessage.getApplication());
-        params.setTopic(mqMessage.getTopic());
-        params.setTag(mqMessage.getTag());
-        params.setBody(mqMessage.getBody());
-        params.setMqKey(mqMessage.getKey());
-        params.setProducerId(mqGuardsProperties.getGroupId());
-        params.setMqMaxRetryTimes(mqGuardsProperties.getRetryTimesWhenFailed());
-        params.setTargetTime(mqMessage.getTargetTime());
-        params.setCreateBy(mqMessage.getOperator());
-        params.setSendWay(mqMessage.getSendWay());
-        try {
-            log.debug("【消息卫士】- 将发送失败的消息保存到服务端，开始！mqMessage={}", mqMessage);
-            String result = HttpUtils.httpMethodPost(mqGuardsProperties.getServerUrl(), toJSONString(params), null);
-            log.debug("【消息卫士】- 将发送失败的消息保存到服务端，结束！mqMessage={}，result={}", mqMessage, result);
-            if (StringUtils.isNotBlank(result)) {
-                BaseResponse baseResponse = JSON.parseObject(result, BaseResponse.class);
-                if (baseResponse.isSuccess()) {
-                    return true;
-                }
-            }
-            log.warn("【消息卫士】- 将发送失败的消息保存到服务端，失败！mqMessage={}，result={}", mqMessage, result);
-            return false;
-        } catch (IOException e) {
-            log.warn("【消息卫士】- 将发送失败的消息保存到服务端，异常！mqMessage=", e);
-            return false;
-        }
-    }
-
-    /**
-     * 保存失败消息到失败队列中(非阻塞方式)
-     *
-     * @param mqMessage 消息实体
-     */
-    public void saveMessageToFailureQueue(MqMessage mqMessage) {
-        boolean offer = failureQueue.offer(mqMessage);
-        if (!offer) {
-            log.error("【消息卫士】- 插入失败队列失败，抛弃该消息！mqMessage={}", mqMessage);
-        }
-    }
-
-    /**
-     * 清理失败队列中的元素，将每个元素都发到服务端，发放失败则直接抛弃
-     * (服务下线时使用)
-     */
-    private void releaseFailureQueue() {
-        log.info("【消息卫士】- 服务下线，清除失败队列中剩余存储消息");
-        do {
-            // 直接弹出头部元素
-            MqMessage head = failureQueue.poll();
-            if (nonNull(head)) {
-                boolean result = saveMessageToServer(head);
-                if (!result) {
-                    log.error("【消息卫士】- 清除内存队列消息失败，丢失消息内容为={}", head);
-                }
-            }
-        } while (!failureQueue.isEmpty());
     }
 
 }
