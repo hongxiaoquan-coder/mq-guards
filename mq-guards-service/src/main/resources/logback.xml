@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="com/hk/simba/base/logging/logback/base-boot.xml"/>
 
     <!-- 属性定义 -->
     <property name="application" value="mq-guards"/>
