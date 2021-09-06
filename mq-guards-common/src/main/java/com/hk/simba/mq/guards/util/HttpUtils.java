@@ -24,31 +24,43 @@ public class HttpUtils {
      * @return java.lang.String
      */
     public static String httpMethodPost(String url, String params, String gb) throws IOException {
-        if (null == gb || "".equals(gb)) {
-            gb = "UTF-8";
+        StringBuilder sb = null;
+        HttpURLConnection uc  = null;
+        BufferedReader in = null;
+        try {
+            if (null == gb || "".equals(gb)) {
+                gb = "UTF-8";
+            }
+            sb = new StringBuilder();
+            URL urls;
+            urls = new URL(url);
+            uc = (HttpURLConnection) urls.openConnection();
+            uc.setRequestMethod("POST");
+            uc.setDoOutput(true);
+            uc.setDoInput(true);
+            uc.setUseCaches(false);
+            uc.setRequestProperty("Content-Type", "application/json");
+            uc.connect();
+            DataOutputStream out = new DataOutputStream(uc.getOutputStream());
+            out.write(params.getBytes(gb));
+            out.flush();
+            out.close();
+            in = new BufferedReader(new InputStreamReader(uc.getInputStream(),
+                    gb));
+            String readLine = "";
+            while ((readLine = in.readLine()) != null) {
+                sb.append(readLine);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(in != null){
+                in.close();
+            }
+            if (uc != null) {
+                uc.disconnect();
+            }
         }
-        StringBuilder sb = new StringBuilder();
-        URL urls;
-        urls = new URL(url);
-        HttpURLConnection uc  = (HttpURLConnection) urls.openConnection();
-        uc.setRequestMethod("POST");
-        uc.setDoOutput(true);
-        uc.setDoInput(true);
-        uc.setUseCaches(false);
-        uc.setRequestProperty("Content-Type", "application/json");
-        uc.connect();
-        DataOutputStream out = new DataOutputStream(uc.getOutputStream());
-        out.write(params.getBytes(gb));
-        out.flush();
-        out.close();
-        BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream(),
-                gb));
-        String readLine = "";
-        while ((readLine = in.readLine()) != null) {
-            sb.append(readLine);
-        }
-        in.close();
-        uc.disconnect();
         return sb.toString();
     }
 

@@ -47,7 +47,6 @@ public class FailureQueueHandleThread extends Thread {
                 }
             } catch (InterruptedException e) {
                 log.error("【消息卫士】- 处理队列消息失败，异常原因=", e);
-                Thread.currentThread().interrupt();
             }
         }
     }

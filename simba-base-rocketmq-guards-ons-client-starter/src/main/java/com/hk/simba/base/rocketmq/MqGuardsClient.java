@@ -224,7 +224,7 @@ public class MqGuardsClient {
                     log.warn("【消息卫士】- 其他发送方式尚无法支持，sendWay={}", mqMessage.getSendWay());
                     break;
             }
-            log.info("【消息卫士】- 发送MQ消息，成功。mqMessage={}, message={}, msgId={}", mqMessage, message, sendResult.getMsgId());
+            log.debug("【消息卫士】- 发送MQ消息，成功。mqMessage={}, message={}, msgId={}", mqMessage, message, sendResult.getMsgId());
         } catch (Exception e) {
             log.error("【消息卫士】- 发送MQ消息={}失败，失败原因=", mqMessage, e);
             // 发送失败，则将消息存到服务端 防止发送延迟 异常进程异步处理

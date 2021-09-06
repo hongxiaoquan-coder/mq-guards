@@ -33,7 +33,10 @@ mq.guards.group-id=GID_RD_QUARK_GDS
 # mq配置信息-名称服务器地址
 mq.guards.name-server-address=http://onsaddr.mq-internet-access.mq-internet.aliyuncs.com:80
 # 存储任务的后台接口地址
-mq.guards.store-message-url=http://127.0.0.1:8080/mq/insert
+mq.guards.server-url=http://127.0.0.1:8080/mq/insert
+# rd http://service-mq-guards.hktrd.cn/mq/insert
+# dev http://service-mq-guards.hkdev.cn/mq/insert
+# prod http://service-mq-guards.homeking365.com/mq/insert
 
 # 非必须配置部分
 # 内存队列容量（发送失败的队列会先存储在服务的内存队列中 不设置默认为1000）
