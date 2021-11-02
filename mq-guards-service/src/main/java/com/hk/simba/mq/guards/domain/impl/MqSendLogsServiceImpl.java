@@ -7,7 +7,7 @@ import com.aliyun.openservices.shade.org.apache.commons.lang3.StringUtils;
 import com.hk.simba.base.beanmapper.BeanMapper;
 import com.hk.simba.mq.guards.domain.MqSendLogsService;
 import com.hk.simba.mq.guards.domain.param.InitMqSendLogsParams;
-import com.hk.simba.mq.guards.domain.param.SendMqByHandParams;
+import com.hk.simba.mq.guards.domain.param.SendByHandParams;
 import com.hk.simba.mq.guards.entity.SendWayEnum;
 import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
 import com.hk.simba.mq.guards.infrastructure.database.enums.MqStatusEnums;
@@ -57,7 +57,7 @@ public class MqSendLogsServiceImpl implements MqSendLogsService {
     }
 
     @Override
-    public void sendByHand(SendMqByHandParams params) {
+    public void sendByHand(SendByHandParams params) {
         List<MqSendLogs> mqSendLogs = mqSendLogsMapper
             .selectAllByApplicationAndIdInAndTopicAndCreateTimeBetweenAndProducerId(params.getApplication(),
                 params.getIdList(), params.getTopic(), params.getBeginTime(), params.getEndTime(),

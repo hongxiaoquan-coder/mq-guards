@@ -1,9 +1,8 @@
 package com.hk.simba.mq.guards;
-import com.google.common.collect.Lists;
 
 import com.hk.simba.mq.guards.domain.MqSendLogsService;
 import com.hk.simba.mq.guards.domain.param.InitMqSendLogsParams;
-import com.hk.simba.mq.guards.domain.param.SendMqByHandParams;
+import com.hk.simba.mq.guards.domain.param.SendByHandParams;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,7 +51,7 @@ public class MqServiceTest {
 
     @Test
     public void testSendByHand(){
-        SendMqByHandParams params = new SendMqByHandParams();
+        SendByHandParams params = new SendByHandParams();
         params.setApplication("SAS");
 //        params.setTopic("");
 //        params.setProducerId("");

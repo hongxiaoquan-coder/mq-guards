@@ -1,7 +1,7 @@
 package com.hk.simba.mq.guards.domain;
 
 import com.hk.simba.mq.guards.domain.param.InitMqSendLogsParams;
-import com.hk.simba.mq.guards.domain.param.SendMqByHandParams;
+import com.hk.simba.mq.guards.domain.param.SendByHandParams;
 import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
 
 import java.util.Date;
@@ -47,6 +47,6 @@ public interface MqSendLogsService {
      * @param params 筛选条件
      * @return void
      */
-    void sendByHand(SendMqByHandParams params);
+    void sendByHand(SendByHandParams params);
 
 }

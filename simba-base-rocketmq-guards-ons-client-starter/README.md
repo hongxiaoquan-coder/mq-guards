@@ -193,12 +193,60 @@ public class MqMessage implements Serializable {
     private Integer retryTimes;
 }
 ```
+
 ### 进行发送
+
 ``` java
    SendResult sendResult = mqProducerClient.sendMessage(mqMessage);
 ```
+
 ### 需要关注的问题
+
 1. 补发需要注意消息的幂等性，消费的时候要避免重复消费的可能性
 2. 支持sync（同步）、async（异步）、oneway（单向）三种方式发送，支持同步方式补发操作，单向方法不支持延时发送
 3. 因接口超时引起的dubbo重试可能导致发起多次消息，多次消息失败对应也会有多次补发发生，需要考虑这种情况的有效杜绝
 4. 失败队列中的消息会进行自动重试操作（将信息存储到数据库），重试多次（次数可自定义，默认为5次）仍失败的消息会被丢弃
+
+### 20211102 更新日志
+
+1. 增加手动补发接口
+接口地址：环境域名/mq/sendByHand
+```java
+  // 筛选条件
+  public class SendByHandParams implements Serializable {
+    private static final long serialVersionUID = -1L;
+
+    /**
+     * 应用方项目名称
+     */
+    private String application;
+
+    /**
+     * mq topic
+     */
+    private String topic;
+
+    /**
+     * 生产者id
+     */
+    private String producerId;
+
+    /**
+     * id列表
+     */
+    private List<Long> idList;
+
+    /**
+     * 开始时间
+     */
+    private Date beginTime;
+
+    /**
+     * 结束时间
+     */
+    private Date endTime;
+
+}
+```
+
+2. 定时任务分段式执行，间隔为1,4,9,16......分钟，依此类推

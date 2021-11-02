@@ -13,7 +13,7 @@ import java.util.List;
  * @since 2021-11-01
  */
 @Data
-public class SendMqByHandParams implements Serializable {
+public class SendByHandParams implements Serializable {
     private static final long serialVersionUID = -1L;
 
     /**
