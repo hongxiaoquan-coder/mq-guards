@@ -12,6 +12,7 @@ import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import com.xxl.job.core.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -40,16 +41,19 @@ public class MqGuardsJob {
 
     @XxlJob("reissueMessageJob")
     public ReturnT<String> reissueMessage(String param) {
-        log.info("--------消息补发开始--------");
-        // 查询状态为初始化 重试次数在最大重试次数下的消息进行补发操作
-        List<MqSendLogs> mqSendLogs = mqSendLogsService.queryUnReissuedMessages(MqStatusEnums.SUCCESS.getCode(), maxRetryTimes);
-        log.info("--------共有{}条消息需要补发--------", mqSendLogs.size());
+        log.info("【消息卫士】--------消息补发开始--------");
+        // 查询非成功状态 重试次数小于最大重试次数 执行时间点小于当前时间的消息进行补发操作
+        List<MqSendLogs> mqSendLogs =
+            mqSendLogsService.queryUnReissuedMessages(MqStatusEnums.SUCCESS.getCode(), maxRetryTimes);
+        log.info("【消息卫士】--------共有{}条消息需要补发--------", mqSendLogs.size());
         mqSendLogs.forEach(mq -> {
             Integer mqMaxRetryTimes = mq.getMqMaxRetryTimes();
             defaultMQProducer.setRetryTimesWhenSendAsyncFailed(mqMaxRetryTimes);
             String producerGroup = mq.getProducerId();
-            defaultMQProducer.setProducerGroup(StringUtils.isEmpty(producerGroup) ? "__ONS_PRODUCER_DEFAULT_GROUP" : producerGroup);
+            defaultMQProducer
+                .setProducerGroup(StringUtils.isEmpty(producerGroup) ? "__ONS_PRODUCER_DEFAULT_GROUP" : producerGroup);
             Message message = new Message(mq.getTopic(), mq.getTag(), mq.getMqKey(), mq.getBody().getBytes());
+            int retriedTimes = mq.getRetriedTimes() + 1;
             try {
                 Date targetTime = mq.getTargetTime();
                 if (targetTime != null) {
@@ -57,7 +61,8 @@ public class MqGuardsJob {
                     long startTime = System.currentTimeMillis();
                     long startDeliverTime = endTime - startTime > 0 ? endTime - startTime : 0L;
                     if (startDeliverTime > 0) {
-                        message.putUserProperty(com.aliyun.openservices.ons.api.Message.SystemPropKey.STARTDELIVERTIME, String.valueOf(startDeliverTime));
+                        message.putUserProperty(com.aliyun.openservices.ons.api.Message.SystemPropKey.STARTDELIVERTIME,
+                            String.valueOf(startDeliverTime));
                     }
                 }
                 SendWayEnum sendWayEnum = SendWayEnum.get(mq.getSendWay());
@@ -75,14 +80,17 @@ public class MqGuardsJob {
                         log.error("unsupported send way={}", mq.getSendWay());
                         break;
                 }
-                log.info("{},消息补偿服务补发mq消息={}", DateUtil.formatDateTime(new Date()), message);
+                log.info("【消息卫士】- {},消息补偿服务补发mq消息={}", DateUtil.formatDateTime(new Date()), message);
                 // 修改定时任务执行次数、任务状态
-                mqSendLogsService.updateRetriedTimesAndStatus(mq.getId(), mq.getRetriedTimes() + 1, MqStatusEnums.SUCCESS.getCode());
-                log.info("{},消息={},补发成功", DateUtil.formatDateTime(new Date()), toJSONString(mq));
+                mqSendLogsService.updateRetriedTimesAndStatusAndExecutionTimeById(mq.getId(), retriedTimes,
+                    MqStatusEnums.SUCCESS.getCode(), mq.getExecutionTime());
+                log.info("【消息卫士】- {},消息={},补发成功", DateUtil.formatDateTime(new Date()), toJSONString(mq));
             } catch (Exception e) {
-                log.error("{},消息={}补发失败，异常原因=",DateUtil.formatDateTime(new Date()), message, e);
-                // 修改定时任务执行次数、任务状态
-                mqSendLogsService.updateRetriedTimesAndStatus(mq.getId(), mq.getRetriedTimes() + 1, MqStatusEnums.FAIL.getCode());
+                log.error("【消息卫士】- {},消息={}补发失败，异常原因=", DateUtil.formatDateTime(new Date()), message, e);
+                // 修改定时任务执行次数、任务状态 重置执行时间点
+                Date executionTime = DateUtils.addMinutes(mq.getExecutionTime(), (int)Math.pow(retriedTimes, 2));
+                mqSendLogsService.updateRetriedTimesAndStatusAndExecutionTimeById(mq.getId(), retriedTimes,
+                    MqStatusEnums.FAIL.getCode(), executionTime);
             }
         });
         return ReturnT.SUCCESS;

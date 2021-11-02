@@ -54,7 +54,7 @@ public class CommonUtils {
             log.warn("【消息卫士】- 将发送失败的消息保存到服务端，失败！mqMessage={}，result={}", mqMessage, result);
             return false;
         } catch (IOException e) {
-            log.warn("【消息卫士】- 将发送失败的消息保存到服务端，异常！mqMessage=", e);
+            log.error("【消息卫士】- 将发送失败的消息保存到服务端，异常！发送参数={},错误原因={}", toJSONString(params), e);
             return false;
         }
     }

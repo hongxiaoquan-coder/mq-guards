@@ -1,8 +1,10 @@
 package com.hk.simba.mq.guards.domain;
 
 import com.hk.simba.mq.guards.domain.param.InitMqSendLogsParams;
+import com.hk.simba.mq.guards.domain.param.SendMqByHandParams;
 import com.hk.simba.mq.guards.infrastructure.database.entity.MqSendLogs;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,11 +33,20 @@ public interface MqSendLogsService {
     /**
      * 根据id修改重试次数和消息状态
      *
-     * @param id 主键id
+     * @param id           主键id
      * @param retriedTimes 重试次数
      * @param status       发送状态
+     * @param executionTime 执行时间
      * @return int
      */
-    int updateRetriedTimesAndStatus(Long id, Integer retriedTimes, Integer status);
+    int updateRetriedTimesAndStatusAndExecutionTimeById(Long id, Integer retriedTimes, Integer status, Date executionTime);
+
+    /**
+     * 手动补发失败mq消息
+     *
+     * @param params 筛选条件
+     * @return void
+     */
+    void sendByHand(SendMqByHandParams params);
 
 }
