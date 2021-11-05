@@ -1,5 +1,6 @@
 package com.hk.simba.mq.guards;
 
+import com.hk.simba.mq.guards.access.job.MqGuardsJob;
 import com.hk.simba.mq.guards.domain.MqSendLogsService;
 import com.hk.simba.mq.guards.domain.param.InitMqSendLogsParams;
 import com.hk.simba.mq.guards.domain.param.SendByHandParams;
@@ -25,6 +26,8 @@ public class MqServiceTest {
 
     @Autowired
     MqSendLogsService mqSendLogsService;
+    @Autowired
+    MqGuardsJob mqGuardsJob;
 
     @Test
     public void testMqSender() {
@@ -59,6 +62,11 @@ public class MqServiceTest {
 //        params.setBeginTime(new Date());
 //        params.setEndTime(new Date());
         mqSendLogsService.sendByHand(params);
+    }
+
+    @Test
+    public void testJob(){
+        mqGuardsJob.reissueMessage("");
     }
 
 }

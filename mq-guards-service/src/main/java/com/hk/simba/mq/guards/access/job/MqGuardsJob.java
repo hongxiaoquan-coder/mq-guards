@@ -88,7 +88,7 @@ public class MqGuardsJob {
             } catch (Exception e) {
                 log.error("【消息卫士】- {},消息={}补发失败，异常原因=", DateUtil.formatDateTime(new Date()), message, e);
                 // 修改定时任务执行次数、任务状态 重置执行时间点
-                Date executionTime = DateUtils.addMinutes(mq.getExecutionTime(), (int)Math.pow(retriedTimes, 2));
+                Date executionTime = DateUtils.addMinutes(new Date(), (int)Math.pow(retriedTimes, 2));
                 mqSendLogsService.updateRetriedTimesAndStatusAndExecutionTimeById(mq.getId(), retriedTimes,
                     MqStatusEnums.FAIL.getCode(), executionTime);
             }
