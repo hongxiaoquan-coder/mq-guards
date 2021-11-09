@@ -1,5 +1,6 @@
 package com.hk.simba.mq.guards.domain.param;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -39,11 +40,13 @@ public class SendByHandParams implements Serializable {
     /**
      * 开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date beginTime;
 
     /**
      * 结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
 }
